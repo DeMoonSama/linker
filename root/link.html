@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Link</title>
+</head>
+<body>
+    <script>
+        // Замените 'YOUR_API_KEY' на ваш API ключ от ipgeolocation.io
+        const API_KEY = '0b257a689f0c488ca1eeba473fd3b3c9';
+        const API_URL = `https://api.ipgeolocation.io/ipgeo?apiKey=${API_KEY}`;
+
+        async function getUserLocation() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                return data.country_code2; // Получаем код страны (например, 'RU' для России)
+            } catch (error) {
+                console.error('Ошибка при получении данных о местоположении:', error);
+                return null;
+            }
+        }
+
+        function redirectUser(countryCode) {
+            const cisCountries = ['RU', 'UA', 'BY', 'KZ', 'MD', 'AM', 'GE', 'TJ', 'KG', 'UZ'];
+            const targetUrlCIS = 'https://t.me/+q2i6YnZW_uhhZTEy';
+            const targetUrlGlobal = 'https://www.youtube.com/';
+
+            if (cisCountries.includes(countryCode)) {
+                window.location.href = targetUrlCIS;
+            } else {
+                window.location.href = targetUrlGlobal;
+            }
+        }
+        
+async function main() {
+            const userCountryCode = await getUserLocation();
+            if (userCountryCode) {
+                redirectUser(userCountryCode);
+            } else {
+                window.location.href = 'https://ваш-сайт.ком/путь-ошибки'; // Резервная ссылка на случай ошибки
+            }
+        }
+
+
+        main();
+    </script>
+</body>
+</html>
